@@ -1,6 +1,12 @@
+using Catalog.API.HostingService;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+
+builder.Services.AddHostedService<AppHostedService>();
+
+
 
 // Add services to the container.
 
