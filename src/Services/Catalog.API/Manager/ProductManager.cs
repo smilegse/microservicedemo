@@ -9,6 +9,7 @@ namespace Catalog.API.Manager
     {
         public ProductManager() : base(new ProductRepository())
         {
+
         }
     }
 }
