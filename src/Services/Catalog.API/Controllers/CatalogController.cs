@@ -2,6 +2,7 @@
 using Catalog.API.Interfaces.Manager;
 using Catalog.API.Manager;
 using Catalog.API.Models;
+using CoreApiResponse;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -10,7 +11,7 @@ namespace Catalog.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CatalogController : ControllerBase
+    public class CatalogController : BaseController
     {
         private readonly IProductManager _productManager;
         public CatalogController(IProductManager productManager)
@@ -18,11 +19,19 @@ namespace Catalog.API.Controllers
             _productManager = productManager;
         }
         [HttpGet]
+        [ResponseCache(Duration = 30)]
         //[ProducesResponseType(typeof(IEnumerable<Product>),(int)HttpStatusCode.OK)]
-        public ActionResult<IEnumerable<Product>> GetProducts()
+        public IActionResult GetProducts()
         {
-            var products =  _productManager.GetAll();
-            return Ok(products);
+            try
+            {
+                var products = _productManager.GetAll();
+                return CustomResult("Product Loaded Successfully", products);
+            }
+            catch (Exception ex)
+            {
+               return CustomResult("Error Occured", ex.Message, HttpStatusCode.InternalServerError);
+            }
         }
         //[HttpGet("{id}")]
         //public async Task<ActionResult<Product>> GetProduct(string id)
