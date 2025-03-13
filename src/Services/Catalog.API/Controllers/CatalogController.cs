@@ -5,6 +5,7 @@ using Catalog.API.Models;
 using CoreApiResponse;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using System.Net;
 
 namespace Catalog.API.Controllers
@@ -26,49 +27,117 @@ namespace Catalog.API.Controllers
             try
             {
                 var products = _productManager.GetAll();
-                return CustomResult("Product Loaded Successfully", products);
+                return CustomResult("Products Loaded Successfully.", products);
             }
             catch (Exception ex)
             {
-               return CustomResult("Error Occured", ex.Message, HttpStatusCode.InternalServerError);
+               return CustomResult(ex.Message, HttpStatusCode.BadRequest);
             }
         }
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Product>> GetProduct(string id)
-        //{
-        //    var product = await prouctManager.GetById(id);
-        //    if (product == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return Ok(product);
-        //}
-        //[HttpPost]
-        //public async Task<ActionResult<Product>> CreateProduct(Product product)
-        //{
-        //    await prouctManager.Create(product);
-        //    return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
-        //}
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> UpdateProduct(string id, Product product)
-        //{
-        //    if (id != product.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    await _productRepository.Update(product);
-        //    return NoContent();
-        //}
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteProduct(string id)
-        //{
-        //    var product = await _productRepository.GetById(id);
-        //    if (product == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    await _productRepository.Delete(product);
-        //    return NoContent();
-        //}
+
+        [HttpPost]
+        public IActionResult CreateProduct([FromBody] Product product)
+        {
+            try
+            {
+                product.Id = ObjectId.GenerateNewId().ToString();
+                bool isSaved = _productManager.Add(product);
+                if (isSaved)
+                {
+                    return CustomResult("Product Created Successfully.", product, HttpStatusCode.Created);
+                }
+                else 
+                {
+                    return CustomResult("Product Saved Failed.", product, HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.BadRequest);
+            }
+        }
+
+        [HttpPut]
+        public IActionResult UpdateProduct([FromBody] Product product)
+        {
+            try
+            {
+                if(string.IsNullOrEmpty(product.Id))
+                {
+                    return CustomResult("Product Id is Required.", HttpStatusCode.NotFound);
+                }
+
+                bool isUpdated = _productManager.Update(product.Id, product);
+                if (isUpdated)
+                {
+                    return CustomResult("Product Updated Successfully.", product, HttpStatusCode.OK);
+                }
+                else
+                {
+                    return CustomResult("Product Update Failed.", product, HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.BadRequest);
+            }
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteProduct(string id)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    return CustomResult("Data not found", HttpStatusCode.NotFound);
+                }
+
+                bool isDeleted = _productManager.Delete(id);
+                if (isDeleted)
+                {
+                    return CustomResult("Product Deleted Successfully.", HttpStatusCode.OK);
+                }
+                else
+                {
+                    return CustomResult("Product Deleted Failed.", HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.BadRequest);
+            }
+        }
+
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(string id)
+        {
+            try
+            {
+                var product = _productManager.GetById(id);               
+                return CustomResult("Product Loaded Successfully.", product);
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.BadRequest);
+            }           
+        }
+
+        [HttpGet]
+        [ResponseCache(Duration = 30)]
+        public IActionResult GetByCategory(string category)
+        {
+            try
+            {
+                var products = _productManager.GetByCategory(category);
+                return CustomResult("Products Loaded Successfully.", products);
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.BadRequest);
+            }
+        }
+
     }
 }

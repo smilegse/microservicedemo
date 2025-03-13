@@ -40,6 +40,14 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/openapi/v1.json", "Catalog.API V1");
     });
 }
+else
+{
+    app.MapOpenApi();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "Catalog.API V1");
+    });
+}
 
 app.UseCors("AllowAll");
 
