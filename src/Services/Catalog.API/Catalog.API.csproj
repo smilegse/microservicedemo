@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreApiResponse" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="MongoRepo" Version="1.0.6" />
@@ -18,11 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\microservicedemo.ServiceDefaults\microservicedemo.ServiceDefaults.csproj" />
+    <Folder Include="Interfaces\Repository\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\Repository\" />
+    <ProjectReference Include="..\CoreApiResponse\CoreApiResponse.csproj" />
   </ItemGroup>
 
 </Project>
