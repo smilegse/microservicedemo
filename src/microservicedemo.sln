@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.API", "Services\Cat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreApiResponse", "Services\CoreApiResponse\CoreApiResponse.csproj", "{BF0E24E5-29BD-4325-8CB3-4F02B682E6C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basket.API", "Services\Basket.API\Basket.API.csproj", "{5B6DD003-9A59-44E1-93A0-F6F649375A68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{BF0E24E5-29BD-4325-8CB3-4F02B682E6C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF0E24E5-29BD-4325-8CB3-4F02B682E6C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF0E24E5-29BD-4325-8CB3-4F02B682E6C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B6DD003-9A59-44E1-93A0-F6F649375A68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B6DD003-9A59-44E1-93A0-F6F649375A68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B6DD003-9A59-44E1-93A0-F6F649375A68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B6DD003-9A59-44E1-93A0-F6F649375A68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,5 +36,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E45D304F-CBB8-49DF-B9A8-350496A13D3F} = {BFD51379-28FA-47D9-8E4C-A48100A0EB5F}
 		{BF0E24E5-29BD-4325-8CB3-4F02B682E6C3} = {BFD51379-28FA-47D9-8E4C-A48100A0EB5F}
+		{5B6DD003-9A59-44E1-93A0-F6F649375A68} = {BFD51379-28FA-47D9-8E4C-A48100A0EB5F}
 	EndGlobalSection
 EndGlobal
