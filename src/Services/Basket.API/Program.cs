@@ -1,8 +1,15 @@
+using Basket.API.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-////builder.Services.AddHostedService<AppHostedService>();
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("RedisBasketDB");
+});
+
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
 builder.Services.AddControllers();
 
@@ -11,13 +18,13 @@ builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll",
-        policy => policy.AllowAnyOrigin()  // Allows requests from any origin
-                        .AllowAnyMethod()  // Allows all HTTP methods (GET, POST, PUT, DELETE, etc.)
-                        .AllowAnyHeader()); // Allows all headers
-});
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowAll",
+//        policy => policy.AllowAnyOrigin()  // Allows requests from any origin
+//                        .AllowAnyMethod()  // Allows all HTTP methods (GET, POST, PUT, DELETE, etc.)
+//                        .AllowAnyHeader()); // Allows all headers
+//});
 
 var app = builder.Build();
 
@@ -33,7 +40,7 @@ else
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowAll");
+//app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 
