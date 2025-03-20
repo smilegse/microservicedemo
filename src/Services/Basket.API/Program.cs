@@ -6,18 +6,22 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+// Register Redis Cache
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration.GetConnectionString("RedisBasketDB");
 });
 
+// Register BasketRepository
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
+// Register DiscountGrpcService
 builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
 {
     options.Address = new Uri(builder.Configuration["GrpcConfigs:DiscountGrpcUrl"]);
 });
 
+// Register DiscountGrpcService
 builder.Services.AddScoped<DiscountGrpcService>();
 
 
